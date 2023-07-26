@@ -19,9 +19,12 @@ async function connectToDB() {
     console.log('Oracle 데이터베이스에 연결되었습니다.');
 
     // 여기에 원하는 쿼리를 실행하는 로직을 추가할 수 있습니다.
-    // 예를 들어, SELECT 쿼리를 실행해보겠습니다.
-    const result = await oracledb.getConnection().execute('SELECT * FROM your_table');
-    console.log('쿼리 결과:', result.rows);
+    const connection = await oracledb.getConnection();
+    const result = await connection.execute('SELECT * FROM ACCOUNTS');
+
+     console.log('쿼리 결과:', result.rows);
+
+
 
   } catch (error) {
     console.error('Oracle 데이터베이스 연결 오류:', error);
