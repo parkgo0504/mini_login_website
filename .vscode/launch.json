@@ -7,8 +7,8 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Open Join.html",
-            "file": "c:\\Users\\smhrd\\Desktop\\HTML,CSS\\mini_Web_Page\\Join.html"
+            "name": "Open login_copy.html",
+            "file": "c:\\Users\\smhrd\\Desktop\\HTML,CSS\\mini_Web_Page\\login_copy.html"
         }
     ]
 }

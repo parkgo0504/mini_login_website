@@ -14,9 +14,17 @@
 
 
 // 페이지 이동 함수
-function movePage() {
+function movePage_Login() {
   // 이동할 페이지의 URL
   const targetURL = "login_copy.html";
+  
+  // 현재 창의 URL을 변경하여 새로운 페이지로 이동합니다.
+  window.location.href = targetURL;
+}
+
+function movePage_Join() {
+  // 이동할 페이지의 URL
+  const targetURL = "Join.html";
   
   // 현재 창의 URL을 변경하여 새로운 페이지로 이동합니다.
   window.location.href = targetURL;
