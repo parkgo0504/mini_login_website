@@ -26,6 +26,17 @@ connection.query('SELECT 1 + 1 AS result', (err, results) => {
   console.log('쿼리 결과:', results[0].result); // 결과: 2
 });
 
+// 테이블 내용 조회 쿼리
+const query = 'SELECT * FROM member;';
+connection.query(query, (err, results) => {
+  if (err) {
+    console.error('쿼리 실행 실패:', err.message);
+    return;
+  }
+  console.log('회원 테이블 내용:');
+  console.log(results);
+});
+
 // 연결 종료
 connection.end((err) => {
   if (err) {
