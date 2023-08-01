@@ -85,12 +85,15 @@ app.get('/', (req,res) => res.sendFile(path.join(__dirname, 'Join.html')))
 
 app.get('/', (req,res) => { 
 
-  const sql = 'SELECT * FROM MEMBER'
-
-  connection.query(sql, function(err, result, field){
-    if(err) throw err;
-    res.send(Result)
-  })
+  const query = 'INSERT INTO member (Name, Email, PW) VALUES (?, ?, ?)';
+  connection.query(query, [name, email, password], (err, results) => {
+    if (err) {
+      console.error('회원 정보 저장 실패:', err.message);
+      return res.status(500).send('회원 정보 저장에 실패하였습니다.');
+    }
+    console.log('회원 정보 저장 성공!');
+    res.status(200).send('회원 가입이 완료되었습니다.');
+  });
 
 });
 
