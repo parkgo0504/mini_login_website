@@ -55,13 +55,17 @@ connection.connect((err) => {
   console.log('MySQL 연결 성공!');
 });
 
-// 미들웨어 설정
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// // 미들웨어 설정
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+
+
+// 회원가입 폼 페이지 제공
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'Join.html')));
 
 // 회원가입 폼 데이터 처리
 app.post('/signup', (req, res) => {
-  const { name, email, password, 'confirm-password': confirmPassword } = req.body;
+  const {id, password, name, email, 'confirm-password': confirmPassword } = req.body;
 
   // 비밀번호 확인
   if (password !== confirmPassword) {
@@ -69,8 +73,8 @@ app.post('/signup', (req, res) => {
   }
 
   // 회원 정보 데이터베이스에 삽입
-  const query = 'INSERT INTO member (Name, Email, PW) VALUES (?, ?, ?)';
-  connection.query(query, [name, email, password], (err, results) => {
+  const query = 'INSERT INTO member (ID,PW, Name, Email ) VALUES (?, ?, ?,?)';
+  connection.query(query, [id,password,name, email ], (err, results) => {
     if (err) {
       console.error('회원 정보 저장 실패:', err.message);
       return res.status(500).send('회원 정보 저장에 실패하였습니다.');
@@ -79,60 +83,17 @@ app.post('/signup', (req, res) => {
     res.status(200).send('회원 가입이 완료되었습니다.');
   });
 });
-
-app.get('/', (req,res) => res.sendFile(path.join(__dirname, 'Join.html')))
-
-
-app.get('/', (req,res) => { 
-
-  const query = 'INSERT INTO member (Name, Email, PW) VALUES (?, ?, ?)';
-  connection.query(query, [name, email, password], (err, results) => {
-    if (err) {
-      console.error('회원 정보 저장 실패:', err.message);
-      return res.status(500).send('회원 정보 저장에 실패하였습니다.');
-    }
-    console.log('회원 정보 저장 성공!');
-    res.status(200).send('회원 가입이 완료되었습니다.');
-  });
-
-});
-
-app.get('/', (req, res) => {
-  res.send('서버 웹사이트가 정상적으로 작동 중입니다.');
-});
-
-
-// 간단한 쿼리 실행 예제
-connection.query('SELECT 1 + 1 AS result', (err, results) => {
-  if (err) {
-    console.error('쿼리 실행 실패:', err.message);
-    return;
-  }
-  console.log('쿼리 결과:', results[0].result); // 결과: 2
-});
-
-// 테이블 내용 조회 쿼리
-const query = 'SELECT * FROM member;';
-connection.query(query, (err, results) => {
-  if (err) {
-    console.error('쿼리 실행 실패:', err.message);
-    return;
-  }
-  console.log('회원 테이블 내용:');
-  console.log(results);
-});
-
 
 
 app.listen(port, () => {
   console.log(`서버가 http://localhost:${port} 에서 작동 중입니다.`);
 });
 
-// 연결 종료
-connection.end((err) => {
-  if (err) {
-    console.error('MySQL 연결 종료 실패:', err.message);
-    return;
-  }
-  console.log('MySQL 연결 종료!');
-});
+// // 연결 종료
+// connection.end((err) => {
+//   if (err) {
+//     console.error('MySQL 연결 종료 실패:', err.message);
+//     return;
+//   }
+//   console.log('MySQL 연결 종료!');
+// });
