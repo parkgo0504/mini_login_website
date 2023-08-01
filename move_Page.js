@@ -7,12 +7,6 @@
 *개정이력 : 
 */
 
-
-
-
-
-
-
 // 페이지 이동 함수
 function movePage_Login() {
   // 이동할 페이지의 URL
