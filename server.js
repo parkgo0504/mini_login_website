@@ -61,7 +61,7 @@ connection.connect((err) => {
 
 
 // 회원가입 폼 페이지 제공
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'Join.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'login_copy.html')));
 
 // 회원가입 폼 데이터 처리
 app.post('/signup', (req, res) => {
@@ -83,6 +83,26 @@ app.post('/signup', (req, res) => {
     res.status(200).send('회원 가입이 완료되었습니다.');
   });
 });
+app.post('/login', (req, res) => {
+  const { id, password } = req.body;
+
+  const query = 'SELECT ID, PW FROM member WHERE ID = ? AND PW = ?';
+  connection.query(query, [id, password], (err, results) => {
+    if (err) {
+      console.error('Login failed:', err.message);
+      return res.status(500).send('Login failed.');
+    }
+
+    if (results.length === 0) {
+      // If no matching ID and password in the database
+      return res.status(401).send('Invalid credentials.');
+    }
+
+    console.log('Login successful!');
+    res.status(200).send('Login was successful');
+  });
+});
+
 
 
 app.listen(port, () => {
