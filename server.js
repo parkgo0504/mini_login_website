@@ -67,6 +67,7 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'login_copy.html'))
 app.post('/signup', (req, res) => {
   const {id, password, name, email, 'confirm-password': confirmPassword } = req.body;
 
+  
   // 비밀번호 확인
   if (password !== confirmPassword) {
     return res.status(400).send('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
@@ -83,6 +84,9 @@ app.post('/signup', (req, res) => {
     res.status(200).send('회원 가입이 완료되었습니다.');
   });
 });
+
+
+
 app.post('/login', (req, res) => {
   const { id, password } = req.body;
 
@@ -91,15 +95,18 @@ app.post('/login', (req, res) => {
     if (err) {
       console.error('Login failed:', err.message);
       return res.status(500).send('Login failed.');
+      // 올바르지 않은 경우 오류 메시지 표시
     }
 
     if (results.length === 0) {
       // If no matching ID and password in the database
       return res.status(401).send('Invalid credentials.');
+      
     }
 
     console.log('Login successful!');
-    res.status(200).send('Login was successful');
+    // 올바른 경우 로그인 성공 페이지로 이동
+    res.sendFile(__dirname + '/home.html');
   });
 });
 

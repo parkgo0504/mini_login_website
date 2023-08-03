@@ -16,6 +16,15 @@ function movePage_Login() {
   window.location.href = targetURL;
 }
 
+function goUrl() {
+  let link = 'Join.html';
+  location.href = link;
+}
+loginBtn.addEventListener('click', goUrl);
+
+
+
+
 function movePage_Join() {
   // 이동할 페이지의 URL
   const targetURL = "Join.html";
