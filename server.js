@@ -1,3 +1,12 @@
+/* 
+*최초작성자 :박기원
+*최초작성일 :2023.07.27
+*최종변경일 :2023.08.03
+*목적 : mysql 와 html 연결하여 node.js 이용하여 서버 이용
+*개정이력 : login 성공시 html 페이지 이동 join_move를 추가하여 회원가입 누를시 join.html페이지 이동
+ */
+
+
 
 // const 변수를 선언하는 방법 int,float 이런식으로 단 다른 값을 할당할 수 없음!!
 // require 은 모듈을 불러오는 함수
@@ -81,7 +90,7 @@ app.post('/signup', (req, res) => {
       return res.status(500).send('회원 정보 저장에 실패하였습니다.');
     }
     console.log('회원 정보 저장 성공!');
-    res.status(200).send('회원 가입이 완료되었습니다.');
+    res.sendFile(__dirname + '/login_copy.html');
   });
 });
 
@@ -103,11 +112,15 @@ app.post('/login', (req, res) => {
       return res.status(401).send('Invalid credentials.');
       
     }
-
     console.log('Login successful!');
     // 올바른 경우 로그인 성공 페이지로 이동
     res.sendFile(__dirname + '/home.html');
   });
+});
+
+app.get('/join_move', (req, res) => {
+  // Join.html 파일로 이동
+  res.sendFile(path.join(__dirname, 'Join.html'));
 });
 
 

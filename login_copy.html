@@ -1,9 +1,9 @@
 /*
 *최초작성자 :박기원
 *최초작성일 :2023.07.27
-*최종변경일 :2023.08.02
+*최종변경일 :2023.08.03
 *목적 : 로그인 html (사용자가 입력한 로그인 정보를 server.js로 보냄)
-*개정이력 : 로그인 type = text 로 변경하여 오류 해결
+*개정이력 : 로그인 성공했을 때 server.js에서 home.html 이동 및 join 을 추가하여 node server 에서 회원가입 페이지 이동
 */
 <!DOCTYPE html>
 <html lang="ko">
@@ -55,6 +55,7 @@
     </style>
 </head>
 
+
 <body>
     <form action="/login" method="POST">
         <h2>로그인</h2>
@@ -67,12 +68,15 @@
             <input type="password" id="password" name="password" required>
         </div>
         <button type="submit">로그인</button>
+
     </form>
-    <a href='Join.html'>
-        <button>회원가입</button>
+
+    <a href="/join_move">
+        <button>Join</button>
     </a>
+
     <!-- 불러오기 -->
-    <script src="move_Page.js"></script>
+    <script src="move_page.js"></script>
 </body>
 
 </html>

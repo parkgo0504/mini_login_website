@@ -7,6 +7,9 @@
 *개정이력 : 
 */
 
+
+alert("안녕")
+
 // 페이지 이동 함수
 function movePage_Login() {
   // 이동할 페이지의 URL
@@ -15,14 +18,6 @@ function movePage_Login() {
   // 현재 창의 URL을 변경하여 새로운 페이지로 이동합니다.
   window.location.href = targetURL;
 }
-
-function goUrl() {
-  let link = 'Join.html';
-  location.href = link;
-}
-loginBtn.addEventListener('click', goUrl);
-
-
 
 
 function movePage_Join() {
