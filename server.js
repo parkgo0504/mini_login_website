@@ -123,6 +123,14 @@ app.get('/join_move', (req, res) => {
   res.sendFile(path.join(__dirname, 'Join.html'));
 });
 
+app.get('/board_move', (req, res) => {
+  // Join.html 파일로 이동
+  res.sendFile(path.join(__dirname, 'board copy.html'));
+});
+
+
+
+
 
 
 app.listen(port, () => {
