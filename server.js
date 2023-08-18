@@ -115,9 +115,9 @@ app.post('/login', (req, res) => {
   connection.query(query, [id, password], (err, results) => {
     
     // 카카오 로그인 처리 로직
-    Kakao.Auth.authorize({
-      redirectUri: 'http://localhost:3000/login/callback', // 로그인 후 리다이렉트할 주소
-    });
+    // Kakao.Auth.authorize({
+    //   redirectUri: 'http://localhost:3000/login/callback', // 로그인 후 리다이렉트할 주소
+    // });
     
     if (err) {
       console.error('Login failed:', err.message);
@@ -149,9 +149,6 @@ function loginWithKakao() {
     redirectUri: 'http://localhost:3000/login',
   });
 }
-
-
-
 
 app.get('/board_move', (req, res) => {
   // Join.html 파일로 이동
