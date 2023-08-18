@@ -1,3 +1,11 @@
+/*
+*최초작성자 :박기원
+*최초작성일 :2023.08.18
+*최종변경일 :
+*목적 : 채팅 서버 따로 팜 테스트 js 
+*개정이력 : 
+*/
+
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
