@@ -3,8 +3,7 @@
 *최초작성일 :2023.07.27
 *최종변경일 :2023.08.08
 *목적 : mysql 와 html 연결하여 node.js 이용하여 서버 이용 (로그인 페이지)
-*개정이력 : 카카오톡 간편 로그인 버튼 클릭시 카카오톡 로그인 들어가는 것 까지 완료
-
+*개정이력 : login 성공시 html 페이지 이동 join_move를 추가하여 회원가입 누를시 join.html페이지 이동
 
  */
 
@@ -37,6 +36,8 @@ app.use(bodyParser.json()); // JSON 형식의 요청 본문 파싱
 app.use(bodyParser.urlencoded({ extended: true })); // URL-encoded 형식의 요청 본문 파싱
  */
 
+// const Kakao = require('kakao'); // Kakao 라이브러리를 사용하기 위해 필요한 npm 코드
+
 
 const app = express();
 const port = 3000;
@@ -56,6 +57,15 @@ const connection = mysql.createConnection({
   password: '12345', // MySQL 비밀번호
   database: 'my_mini', // 사용할 데이터베이스 이름
 });
+
+const kakao = {
+  clientID: '카카오에서 받은clientID',
+  clientSecret: '7oKLZo62jz4oYB26Thka7EB1cbvGxnh0',
+  redirectUri: '카카오에서 설정한redirectUri'
+}
+
+
+
 
 // MySQL 데이터베이스 연결
 connection.connect((err) => {
@@ -103,6 +113,12 @@ app.post('/login', (req, res) => {
 
   const query = 'SELECT ID, PW FROM member WHERE ID = ? AND PW = ?';
   connection.query(query, [id, password], (err, results) => {
+    
+    // 카카오 로그인 처리 로직
+    Kakao.Auth.authorize({
+      redirectUri: 'http://localhost:3000/login/callback', // 로그인 후 리다이렉트할 주소
+    });
+    
     if (err) {
       console.error('Login failed:', err.message);
       return res.status(500).send('Login failed.');
@@ -114,6 +130,7 @@ app.post('/login', (req, res) => {
       return res.status(401).send('Invalid credentials.');
       
     }
+
     console.log('Login successful!');
     // 올바른 경우 로그인 성공 페이지로 이동
     res.sendFile(__dirname + '/home.html');
@@ -124,6 +141,17 @@ app.get('/join_move', (req, res) => {
   // Join.html 파일로 이동
   res.sendFile(path.join(__dirname, 'Join.html'));
 });
+
+
+
+function loginWithKakao() {
+  Kakao.Auth.authorize({
+    redirectUri: 'http://localhost:3000/login',
+  });
+}
+
+
+
 
 app.get('/board_move', (req, res) => {
   // Join.html 파일로 이동

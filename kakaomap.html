@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>거주지 인증</title>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_API_KEY&libraries=services"></script>
+</head>
+<body>
+  <div id="map" style="width: 100%; height: 500px;"></div>
+  <button id="verify-button">거주지 인증</button>
+  <script>
+    const mapContainer = document.getElementById('map');
+    const verifyButton = document.getElementById('verify-button');
+
+    // Kakao Map 초기화
+    kakao.maps.load(() => {
+      const map = new kakao.maps.Map(mapContainer, {
+        center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 중심
+        level: 10
+      });
+
+      // 거주지 데이터 설정
+      const residenceBoundaries = [
+        // 여기에 지역 경계 정보를 설정합니다.
+        // 예: { name: '강남구', boundary: [ ... ] },
+      ];
+
+      verifyButton.addEventListener('click', () => {
+        // 사용자 위치 추출
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userLatLng = new kakao.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+            // 거주지 확인
+            const isResidence = residenceBoundaries.some(residence => {
+              const polygon = new kakao.maps.Polygon({
+                path: residence.boundary
+              });
+              return kakao.maps.geometry.poly.containsLocation(userLatLng, polygon);
+            });
+
+            // 결과 표시 및 처리
+            if (isResidence) {
+              alert('거주지가 확인되었습니다.');
+            } else {
+              alert('거주지가 아닙니다.');
+              // 거주지가 아닌 경우, 추가 조치를 취할 수 있도록 안내합니다.
+            }
+          },
+          (error) => {
+            console.error('위치 정보를 가져올 수 없습니다:', error);
+          }
+        );
+      });
+    });
+  </script>
+</body>
+</html>
