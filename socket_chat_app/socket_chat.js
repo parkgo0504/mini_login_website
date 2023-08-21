@@ -42,36 +42,9 @@ io.on('connection', (socket) => {
     const messageWithIp = `${data.name}: ${data.message}`;
     io.emit('chat message', messageWithIp);
   });
-  
-
-  // socket.on('chat message', (msg) => {
-  //   io.emit('chat message', msg);
-  // });
 });
 
 
-// io.on('connection', (socket) => {
-//   console.log('A user connected');
-
-//   const userIpAddress = socket.handshake.address; // Get user's IP address
-
-//   socket.on('disconnect', () => {
-//     console.log('User disconnected');
-//   });
-
-//   socket.on('join room', (roomName) => {
-//     socket.join(roomName);
-//   });
-
-//   socket.on('leave room', (roomName) => {
-//     socket.leave(roomName);
-//   });
-
-//   socket.on('chat message', (msg, roomName) => {
-//     const messageWithIp = `${userIpAddress}: ${msg}`;
-//     io.to(roomName).emit('chat message', messageWithIp);
-//   });
-// });
 
 
 // server.listen(3000, () => {
