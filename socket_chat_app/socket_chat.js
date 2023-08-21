@@ -1,9 +1,9 @@
 /*
 *최초작성자 :박기원
 *최초작성일 :2023.08.18
-*최종변경일 :2023.08.21
+*최종변경일 :2023.08.22
 *목적 : 채팅 서버 따로 팜 테스트 js  
-*개정이력 : 채팅 ip 이름 불러와서 메시지 옆에 ip출력하기
+*개정이력 : 채팅 ip 이름 불러와서 메시지 옆에 ip출력하기 및 방 개념 추가
 */
 
 const express = require('express');
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  const userIpAddress = socket.handshake.address; // Get user's IP address
+  const userIpAddress = socket.handshake.address; // id 가져오기
   console.log(userIpAddress+' user connected');
 
   socket.on('join room', (roomName) => {
