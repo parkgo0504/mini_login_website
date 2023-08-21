@@ -13,6 +13,8 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+const roomChatHistory = {}; // 방 이름과 채팅 기록을 매칭하는 객체
+
 
 app.use(express.static(__dirname)); // Serve static files
 
@@ -22,29 +24,40 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   const userIpAddress = socket.handshake.address; // Get user's IP address
-  console.log('A user connected');
+  console.log(userIpAddress+' user connected');
+
+  socket.on('join room', (roomName) => {
+    socket.join(roomName);
+
+
+    if (!roomChatHistory[roomName]) {
+      roomChatHistory[roomName] = []; // 방 이름에 해당하는 채팅 기록 객체 초기화
+    }
+    socket.emit('chat history', roomChatHistory[roomName]); // 이전 채팅 기록 전송
+
+  });
+
 
   socket.on('disconnect', () => {
     console.log('User disconnected');
-  });
 
-    socket.on('join room', (roomName) => {
-    socket.join(roomName);
   });
-
   socket.on('leave room', (roomName) => {
     socket.leave(roomName);
   });
 
-
-  
   socket.on('chat message', (data) => {
+    if (roomChatHistory[data.room]) { // 방 이름에 해당하는 채팅 기록 객체가 있는지 확인
     const messageWithIp = `${data.name}: ${data.message}`;
-    io.emit('chat message', messageWithIp);
+    roomChatHistory[data.room].push(messageWithIp); // 해당 방의 채팅 기록에 추가
+    io.to(data.room).emit('chat message', messageWithIp);
+  }
   });
 });
-
-
+  // socket.on('chat message', (data) => {
+  //   const messageWithIp = `${data.name}: ${data.message}`;
+  //   io.emit('chat message', messageWithIp);
+  // });
 
 
 // server.listen(3000, () => {
