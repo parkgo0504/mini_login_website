@@ -6,9 +6,6 @@
 *개정이력 : 
 */
 
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,8 +40,16 @@
 
       socket.on('chat message', function(msg) {
         $('#messages').append($('<li>').text(msg));
+
+
+          
+          
       });
     });
   </script>
 </body>
 </html>
+
+<!-- socket.on('chat message', function(msgWithIp) {
+  $('#messages').append($('<li>').text(msgWithIp));
+}); -->

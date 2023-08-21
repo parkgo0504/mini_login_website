@@ -1,9 +1,9 @@
 /*
 *최초작성자 :박기원
 *최초작성일 :2023.08.18
-*최종변경일 :
-*목적 : 채팅 서버 따로 팜 테스트 js 
-*개정이력 : 
+*최종변경일 :2023.08.21
+*목적 : 채팅 서버 따로 팜 테스트 js  
+*개정이력 : 채팅 ip 이름 불러와서 메시지 옆에 ip출력하기
 */
 
 const express = require('express');
@@ -21,16 +21,57 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+  const userIpAddress = socket.handshake.address; // Get user's IP address
   console.log('A user connected');
 
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });
 
+    socket.on('join room', (roomName) => {
+    socket.join(roomName);
+  });
+
+  socket.on('leave room', (roomName) => {
+    socket.leave(roomName);
+  });
+
+
+  
+  // socket.on('chat message', (msg, roomName) => {
+  //   const messageWithIp = '${userIpAddress}: ${msg}';
+  //   io.to(roomName).emit('chat message', messageWithIp);
+  // });
+
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
 });
+
+
+// io.on('connection', (socket) => {
+//   console.log('A user connected');
+
+//   const userIpAddress = socket.handshake.address; // Get user's IP address
+
+//   socket.on('disconnect', () => {
+//     console.log('User disconnected');
+//   });
+
+//   socket.on('join room', (roomName) => {
+//     socket.join(roomName);
+//   });
+
+//   socket.on('leave room', (roomName) => {
+//     socket.leave(roomName);
+//   });
+
+//   socket.on('chat message', (msg, roomName) => {
+//     const messageWithIp = `${userIpAddress}: ${msg}`;
+//     io.to(roomName).emit('chat message', messageWithIp);
+//   });
+// });
+
 
 // server.listen(3000, () => {
 //   console.log(`서버가 http://localhost:${3000} 에서 작동 중입니다.`);
