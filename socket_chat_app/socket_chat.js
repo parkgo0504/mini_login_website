@@ -38,14 +38,15 @@ io.on('connection', (socket) => {
 
 
   
-  // socket.on('chat message', (msg, roomName) => {
-  //   const messageWithIp = '${userIpAddress}: ${msg}';
-  //   io.to(roomName).emit('chat message', messageWithIp);
-  // });
-
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+  socket.on('chat message', (data) => {
+    const messageWithIp = `${data.name}: ${data.message}`;
+    io.emit('chat message', messageWithIp);
   });
+  
+
+  // socket.on('chat message', (msg) => {
+  //   io.emit('chat message', msg);
+  // });
 });
 
 
@@ -78,6 +79,10 @@ io.on('connection', (socket) => {
 // });
 
 
-server.listen(3000, '59.3.58.102', () => {
-  console.log(`서버가 http://59.3.58.102:${3000} 에서 작동 중입니다.`);
+// server.listen(3000, '59.3.58.102', () => {
+//   console.log(`서버가 http://59.3.58.102:${3000} 에서 작동 중입니다.`);
+// });
+
+server.listen(3000, '192.168.0.15', () => {
+  console.log(`서버가 http://192.168.0.15:${3000} 에서 작동 중입니다.`);
 });
