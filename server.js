@@ -1,9 +1,10 @@
 /* 
 *최초작성자 :박기원
 *최초작성일 :2023.07.27
-*최종변경일 :2023.08.08
+*최종변경일 :2023.08.23
 *목적 : mysql 와 html 연결하여 node.js 이용하여 서버 이용 (로그인 페이지)
-*개정이력 : login 성공시 html 페이지 이동 join_move를 추가하여 회원가입 누를시 join.html페이지 이동
+*개정이력 : 게시판 이동 및 카카오맵 이동
+
 
  */
 
@@ -58,11 +59,11 @@ const connection = mysql.createConnection({
   database: 'my_mini', // 사용할 데이터베이스 이름
 });
 
-const kakao = {
-  clientID: '카카오에서 받은clientID',
-  clientSecret: '7oKLZo62jz4oYB26Thka7EB1cbvGxnh0',
-  redirectUri: '카카오에서 설정한redirectUri'
-}
+// const kakao = {
+//   clientID: '카카오에서 받은clientID',
+//   clientSecret: '7oKLZo62jz4oYB26Thka7EB1cbvGxnh0',
+//   redirectUri: '카카오에서 설정한redirectUri'
+// }
 
 
 
@@ -114,10 +115,10 @@ app.post('/login', (req, res) => {
   const query = 'SELECT ID, PW FROM member WHERE ID = ? AND PW = ?';
   connection.query(query, [id, password], (err, results) => {
     
-    // 카카오 로그인 처리 로직
-    Kakao.Auth.authorize({
-      redirectUri: 'http://localhost:3000/login/callback', // 로그인 후 리다이렉트할 주소
-    });
+    // // 카카오 로그인 처리 로직
+    // Kakao.Auth.authorize({
+    //   redirectUri: 'http://localhost:3000/login/callback', // 로그인 후 리다이렉트할 주소
+    // });
     
     if (err) {
       console.error('Login failed:', err.message);
@@ -144,17 +145,24 @@ app.get('/join_move', (req, res) => {
 
 
 
-function loginWithKakao() {
-  Kakao.Auth.authorize({
-    redirectUri: 'http://localhost:3000/login',
-  });
-}
+// function loginWithKakao() {
+//   Kakao.Auth.authorize({
+//     redirectUri: 'http://localhost:3000/login',
+//   });
+// }
 
+
+
+//파일 이동
 app.get('/board_move', (req, res) => {
-  // Join.html 파일로 이동
-  res.sendFile(path.join(__dirname, 'board copy.html'));
+  // board_copy.html 파일로 이동
+  res.sendFile(path.join(__dirname, 'board_main.html'));
 });
 
+app.get('/kakaomap_move', (req, res) => {
+  // kakaomap.html 파일로 이동
+  res.sendFile(path.join(__dirname, 'kakaomap.html'));
+});
 
 
 
