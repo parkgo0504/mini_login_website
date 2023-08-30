@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // URL-encoded 형식의 요
  */
 
 // const Kakao = require('kakao'); // Kakao 라이브러리를 사용하기 위해 필요한 npm 코드
-
+const KakaoStrategy = require('passport-kakao').Strategy;
 
 const app = express();
 const port = 3000;
@@ -80,6 +80,20 @@ connection.connect((err) => {
 // // 미들웨어 설정
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
+
+// Passport 설정
+passport.use(new KakaoStrategy({
+  clientID: '카카오_클라이언트_아이디',
+  callbackURL: 'http:///auth/kakao/callback'
+}, (accessToken, refreshToken, profile, done) => {
+  // 여기에서 프로필 데이터를 기반으로 사용자를 생성하거나 업데이트할 수 있습니다.
+  // 사용자 객체를 done 함수에 전달하세요.
+  return done(null, profile);
+}));
+
+
+
+
 
 
 // 회원가입 폼 페이지 제공
