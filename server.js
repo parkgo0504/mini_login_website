@@ -81,6 +81,8 @@ connection.connect((err) => {
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 
+
+/*
 // Passport 설정
 passport.use(new KakaoStrategy({
   clientID: '카카오_클라이언트_아이디',
@@ -90,7 +92,7 @@ passport.use(new KakaoStrategy({
   // 사용자 객체를 done 함수에 전달하세요.
   return done(null, profile);
 }));
-
+*/
 
 
 
