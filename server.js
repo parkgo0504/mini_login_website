@@ -1,14 +1,12 @@
 /* 
 *최초작성자 :박기원
 *최초작성일 :2023.07.27
-*최종변경일 :2023.08.23
+*최종변경일 :2023.08.30
 *목적 : mysql 와 html 연결하여 node.js 이용하여 서버 이용 (로그인 페이지)
-*개정이력 : 게시판 이동 및 카카오맵 이동
+*개정이력 : 카카오 간편 로그인 수정중
 
 
  */
-
-
 
 // const 변수를 선언하는 방법 int,float 이런식으로 단 다른 값을 할당할 수 없음!!
 // require 은 모듈을 불러오는 함수
@@ -38,11 +36,11 @@ app.use(bodyParser.urlencoded({ extended: true })); // URL-encoded 형식의 요
  */
 
 // const Kakao = require('kakao'); // Kakao 라이브러리를 사용하기 위해 필요한 npm 코드
+const passport = require('passport');
 const KakaoStrategy = require('passport-kakao').Strategy;
 
 const app = express();
 const port = 3000;
-
 
 //Body-parser 미들웨어를 Express 애플리케이션에 등록합니다.
 
@@ -59,15 +57,6 @@ const connection = mysql.createConnection({
   database: 'my_mini', // 사용할 데이터베이스 이름
 });
 
-// const kakao = {
-//   clientID: '카카오에서 받은clientID',
-//   clientSecret: '7oKLZo62jz4oYB26Thka7EB1cbvGxnh0',
-//   redirectUri: '카카오에서 설정한redirectUri'
-// }
-
-
-
-
 // MySQL 데이터베이스 연결
 connection.connect((err) => {
   if (err) {
@@ -77,26 +66,15 @@ connection.connect((err) => {
   console.log('MySQL 연결 성공!');
 });
 
-// // 미들웨어 설정
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-
-
-/*
 // Passport 설정
 passport.use(new KakaoStrategy({
-  clientID: '카카오_클라이언트_아이디',
-  callbackURL: 'http:///auth/kakao/callback'
+  clientID: '3891aebf985c1c66cadfb5a862182fb2',
+  callbackURL: 'http://localhost:3000/auth/kakao/callback', // 로그인 후 리다이렉트할 주소
 }, (accessToken, refreshToken, profile, done) => {
   // 여기에서 프로필 데이터를 기반으로 사용자를 생성하거나 업데이트할 수 있습니다.
   // 사용자 객체를 done 함수에 전달하세요.
   return done(null, profile);
 }));
-*/
-
-
-
-
 
 // 회원가입 폼 페이지 제공
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'login_copy.html')));
@@ -131,10 +109,7 @@ app.post('/login', (req, res) => {
   const query = 'SELECT ID, PW FROM member WHERE ID = ? AND PW = ?';
   connection.query(query, [id, password], (err, results) => {
     
-    // // 카카오 로그인 처리 로직
-    // Kakao.Auth.authorize({
-    //   redirectUri: 'http://localhost:3000/login/callback', // 로그인 후 리다이렉트할 주소
-    // });
+
     
     if (err) {
       console.error('Login failed:', err.message);
@@ -159,16 +134,6 @@ app.get('/join_move', (req, res) => {
   res.sendFile(path.join(__dirname, 'Join.html'));
 });
 
-
-
-// function loginWithKakao() {
-//   Kakao.Auth.authorize({
-//     redirectUri: 'http://localhost:3000/login',
-//   });
-// }
-
-
-
 //파일 이동
 app.get('/board_move', (req, res) => {
   // board_copy.html 파일로 이동
@@ -179,10 +144,6 @@ app.get('/kakaomap_move', (req, res) => {
   // kakaomap.html 파일로 이동
   res.sendFile(path.join(__dirname, 'kakaomap.html'));
 });
-
-
-
-
 
 app.listen(port, () => {
   console.log(`서버가 http://localhost:${port} 에서 작동 중입니다.`);
